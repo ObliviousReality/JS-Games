@@ -7,9 +7,12 @@ var RED;
 var BLUE;
 var GREEN;
 var YELLOW;
+var NOCOLOUR;
 var colours;
 
 const NUMCOLOURS = 4;
+
+const MAXROUNDS = 10;
 
 class GameState {
   static MENU = new GameState(0);
@@ -34,14 +37,23 @@ var difficultyFactor = 0;
 
 var correctColours;
 
+var selectedColours;
+
+var roundCounter;
+
+var colourIndex = 0;
+
 function defineGlobals() {
   currentState = GameState.MENU;
   RED = color(255, 0, 0);
   GREEN = color(0, 255, 0);
   BLUE = color(0, 0, 255);
   YELLOW = color(255, 255, 0);
+  NOCOLOUR = color(255);
   colours = [RED, BLUE, GREEN, YELLOW];
   BACKGROUNDCOLOUR = color(0);
+  roundCounter = 0;
+  colourIndex = 0;
 }
 
 function drawMenu() {
@@ -69,20 +81,49 @@ function setupGame() {
   for (let i = 0; i < difficultyFactor; i++) {
     correctColours[i] = floor(random(0, NUMCOLOURS));
   }
+  selectedColours = new Array(MAXROUNDS);
+  for (let i = 0; i < MAXROUNDS; i++) {
+    selectedColours[i] = new Array(difficultyFactor);
+    for (let j = 0; j < difficultyFactor; j++) {
+      selectedColours[i][j] = NOCOLOUR;
+    }
 
+  }
+}
+
+function clearSelectedColours() {
+  for (let i = 0; i < difficultyFactor; i++) {
+    selectedColours[roundCounter][i] = NOCOLOUR;
+  }
+  colourIndex = 0;
+}
+
+function selectColour(colourVal) {
+  if (colourIndex == difficultyFactor) {
+    return;
+  }
+  selectedColours[roundCounter][colourIndex++] = colours[colourVal];
 }
 
 
 function drawGame() {
-  let xVal = 100;
-  let offsetVal = 200 / (difficultyFactor - 1);
-  for (let i = 0; i < difficultyFactor; i++) {
-    fill(colours[correctColours[i]]);
-    circle(xVal, 200, 30);
-    xVal = xVal + offsetVal;
+  for (let j = 0; j < MAXROUNDS + 1; j++) {
+    let xVal = 50;
+    let offsetVal = 200 / (difficultyFactor - 1);
+    for (let i = 0; i < difficultyFactor; i++) {
+      if (j == 0) {
+        fill(colours[correctColours[i]]);
+      }
+      else {
+        log(i, j);
+        fill(selectedColours[j - 1][i]);
+      }
+      circle(xVal, 200 + (j * 35), 30);
+      xVal = xVal + offsetVal;
+    }
   }
-  xVal = 50;
-  offsetVal = 300 / (3);
+  let xVal = 50;
+  let offsetVal = 300 / (3);
   for (let i = 0; i < NUMCOLOURS; i++) {
     fill(colours[i]);
     circle(xVal, HEIGHT - 150, 100);
@@ -153,23 +194,23 @@ function mouseClicked() {
           debugText = "Enter";
         }
         else {
-          debugText = "Clear";
+          clearSelectedColours();
         }
       }
       else {
         let button = floor(mouseX / 100);
         switch (button) {
           case 0:
-            debugText = "RED";
+            selectColour(0);
             break;
           case 1:
-            debugText = "GREEN";
+            selectColour(1);
             break;
           case 2:
-            debugText = "BLUE";
+            selectColour(2);
             break;
           case 3:
-            debugText = "YELLOW";
+            selectColour(3);
             break;
 
           default:
