@@ -81,6 +81,25 @@ function drawGame() {
     circle(xVal, 200, 30);
     xVal = xVal + offsetVal;
   }
+  xVal = 50;
+  offsetVal = 300 / (3);
+  for (let i = 0; i < NUMCOLOURS; i++) {
+    fill(colours[i]);
+    circle(xVal, HEIGHT - 150, 100);
+    xVal = xVal + offsetVal;
+  }
+  push();
+  {
+    fill(128);
+    rect(0, HEIGHT - 100, 200, 100, 75);
+    fill(107, 22, 162);
+    rect(200, HEIGHT - 100, 200, 100, 75);
+    fill(0);
+    textSize(50);
+    text("Clear", 100, HEIGHT - 50);
+    text("Enter", 300, HEIGHT - 50);
+  }
+  pop();
 }
 
 function setup() {
@@ -127,10 +146,46 @@ function mouseClicked() {
       setupGame();
     }
   }
+  else if (currentState == GameState.GAME) {
+    if (mouseY > HEIGHT - 200) {
+      if (mouseY > HEIGHT - 100) {
+        if (mouseX > 200) {
+          debugText = "Enter";
+        }
+        else {
+          debugText = "Clear";
+        }
+      }
+      else {
+        let button = floor(mouseX / 100);
+        switch (button) {
+          case 0:
+            debugText = "RED";
+            break;
+          case 1:
+            debugText = "GREEN";
+            break;
+          case 2:
+            debugText = "BLUE";
+            break;
+          case 3:
+            debugText = "YELLOW";
+            break;
+
+          default:
+            break;
+        }
+      }
+    }
+
+  }
 }
 
 function keyPressed() {
   if (key == 'r') {
     setup();
+  }
+  if (key == 'c') {
+    debugText = "";
   }
 }
