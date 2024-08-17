@@ -26,13 +26,16 @@ class GameState {
   id;
 };
 
-var currentState = GameState.MENU;
+var currentState;
 
 var debugText = "";
 
 var difficultyFactor = 0;
 
+var correctColours;
+
 function defineGlobals() {
+  currentState = GameState.MENU;
   RED = color(255, 0, 0);
   GREEN = color(0, 255, 0);
   BLUE = color(0, 0, 255);
@@ -61,12 +64,23 @@ function drawMenu() {
 }
 
 function setupGame() {
+  correctColours = new Array(difficultyFactor);
+
+  for (let i = 0; i < difficultyFactor; i++) {
+    correctColours[i] = floor(random(0, NUMCOLOURS));
+  }
 
 }
 
 
 function drawGame() {
-
+  let xVal = 100;
+  let offsetVal = 200 / (difficultyFactor - 1);
+  for (let i = 0; i < difficultyFactor; i++) {
+    fill(colours[correctColours[i]]);
+    circle(xVal, 200, 30);
+    xVal = xVal + offsetVal;
+  }
 }
 
 function setup() {
@@ -116,4 +130,7 @@ function mouseClicked() {
 }
 
 function keyPressed() {
+  if (key == 'r') {
+    setup();
+  }
 }
