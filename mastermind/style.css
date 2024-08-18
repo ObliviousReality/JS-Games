@@ -1,8 +1,15 @@
 html, body {
   margin: 0;
   padding: 0;
+  background-color: #121212 ;
+}
+
+main {
+  display: flex;
+  justify-content: center;
 }
 
 canvas {
   display: block;
+  border: 2px solid #6b16a2;
 }
