@@ -60,7 +60,7 @@ function defineGlobals() {
   BLACK = color(0);
   colours = [RED, BLUE, GREEN, YELLOW, WHITE];
   pipColours = [BLACK, WHITE, RED];
-  BACKGROUNDCOLOUR = color(0);
+  BACKGROUNDCOLOUR = color(0x12);
   roundCounter = 0;
   colourIndex = 0;
 }
