@@ -94,11 +94,11 @@ function setupGame() {
   pips = new Array(MAXROUNDS);
   for (let i = 0; i < MAXROUNDS; i++) {
     selectedColours[i] = new Array(difficultyFactor);
-    pips[i] = new Array(4);
+    pips[i] = new Array(difficultyFactor);
     for (let j = 0; j < difficultyFactor; j++) {
       selectedColours[i][j] = NUMCOLOURS;
     }
-    for (let j = 0; j < 4; j++) {
+    for (let j = 0; j < difficultyFactor; j++) {
       pips[i][j] = 0;
     }
   }
@@ -174,8 +174,8 @@ function drawGame() {
     }
     {
       let xVal = 300;
-      let offsetVal = 75 / 3;
-      for (let i = 0; i < 4; i++) {
+      let offsetVal = 75 / difficultyFactor - 1;
+      for (let i = 0; i < difficultyFactor; i++) {
         fill(pipColours[pips[j][i]]);
         circle(xVal, 150 + (j * 35), 10);
         xVal = xVal + offsetVal;
