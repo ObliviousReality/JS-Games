@@ -9,6 +9,9 @@ var GREEN;
 var YELLOW;
 var WHITE;
 var BLACK;
+var PURPLE;
+var OFFWHITE;
+var ORANGE;
 var colours;
 
 const NUMCOLOURS = 4;
@@ -51,6 +54,7 @@ var roundCounter;
 var colourIndex = 0;
 
 function defineGlobals() {
+  textFont("Bahnschrift");
   currentState = GameState.MENU;
   RED = color(255, 0, 0);
   GREEN = color(0, 255, 0);
@@ -58,28 +62,36 @@ function defineGlobals() {
   YELLOW = color(255, 255, 0);
   WHITE = color(255);
   BLACK = color(0);
-  colours = [RED, BLUE, GREEN, YELLOW, WHITE];
-  pipColours = [BLACK, WHITE, RED];
+  PURPLE = color(107, 22, 162);
+  OFFWHITE = color(200);
+  ORANGE = color(255, 149, 0)
+  colours = [RED, BLUE, GREEN, YELLOW, OFFWHITE];
+  pipColours = [BLACK, OFFWHITE, RED];
   BACKGROUNDCOLOUR = color(0x12);
   roundCounter = 0;
   colourIndex = 0;
 }
 
 function drawMenu() {
-  textAlign(CENTER, CENTER);
-  fill(255);
-  textSize(20);
+  fill(PURPLE);
+  textSize(50);
   text("New Game", 200, 200);
 
-  rect(100, 300, 200, 100);
+  fill(GREEN);
+  rect(100, 300, 200, 100, 25, 25, 0, 0);
+  fill(ORANGE);
   rect(100, 400, 200, 100);
-  rect(100, 500, 200, 100);
+  fill(RED);
+  rect(100, 500, 200, 100, 0, 0, 25, 25);
   push();
   {
-    fill(0);
-    text("Easy", 200, 350)
-    text("Medium", 200, 450)
-    text("Hard", 200, 550)
+    fill(BLACK);
+    textFont("Comic Sans MS")
+    text("Easy", 200, 350);
+    textFont("Bahnschrift")
+    text("Medium", 200, 450);
+    textFont("Chiller")
+    text("Hard", 200, 550);
   }
   pop();
 }
@@ -191,15 +203,14 @@ function drawGame() {
   }
   push();
   {
-    fill(128);
+    fill(OFFWHITE);
     rect(0, HEIGHT - 100, 200, 100, 75);
-    if (colourIndex == difficultyFactor)
-    {
-      fill(107, 22, 162);
+    if (colourIndex == difficultyFactor) {
+      fill(PURPLE);
     }
 
     rect(200, HEIGHT - 100, 200, 100, 75);
-    fill(0);
+    fill(BLACK);
     textSize(50);
     text("Clear", 100, HEIGHT - 50);
     text("Enter", 300, HEIGHT - 50);
@@ -213,11 +224,20 @@ function drawEnd() {
 
 function setup() {
   createCanvas(WIDTH, HEIGHT);
+  textAlign(CENTER, CENTER);
   defineGlobals();
 }
 
 function draw() {
   background(BACKGROUNDCOLOUR);
+  textSize(65);
+  push();
+  {
+    textStyle(ITALIC)
+    fill(RED);
+    text("Main🧠Mind", 200, 80);
+  }
+  pop();
   if (currentState == GameState.MENU) {
     drawMenu();
   }
@@ -229,7 +249,7 @@ function draw() {
   }
   push();
   if (debugMode) {
-    fill(255, 0, 0);
+    fill(RED);
     text(debugText, WIDTH / 2, HEIGHT - 100);
   }
   pop();
