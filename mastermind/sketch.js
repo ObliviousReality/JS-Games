@@ -14,9 +14,12 @@ const NUMCOLOURS = 4;
 
 const MAXROUNDS = 10;
 
+var debugMode = false;
+
 class GameState {
   static MENU = new GameState(0);
   static GAME = new GameState(1);
+  static END = new GameState(2);
 
   constructor(val) {
     this.id = val;
@@ -50,7 +53,7 @@ function defineGlobals() {
   BLUE = color(0, 0, 255);
   YELLOW = color(255, 255, 0);
   NOCOLOUR = color(255);
-  colours = [RED, BLUE, GREEN, YELLOW];
+  colours = [RED, BLUE, GREEN, YELLOW, NOCOLOUR];
   BACKGROUNDCOLOUR = color(0);
   roundCounter = 0;
   colourIndex = 0;
@@ -85,7 +88,7 @@ function setupGame() {
   for (let i = 0; i < MAXROUNDS; i++) {
     selectedColours[i] = new Array(difficultyFactor);
     for (let j = 0; j < difficultyFactor; j++) {
-      selectedColours[i][j] = NOCOLOUR;
+      selectedColours[i][j] = NUMCOLOURS;
     }
 
   }
@@ -93,7 +96,7 @@ function setupGame() {
 
 function clearSelectedColours() {
   for (let i = 0; i < difficultyFactor; i++) {
-    selectedColours[roundCounter][i] = NOCOLOUR;
+    selectedColours[roundCounter][i] = NUMCOLOURS;
   }
   colourIndex = 0;
 }
@@ -102,23 +105,39 @@ function selectColour(colourVal) {
   if (colourIndex == difficultyFactor) {
     return;
   }
-  selectedColours[roundCounter][colourIndex++] = colours[colourVal];
+  selectedColours[roundCounter][colourIndex++] = colourVal;
 }
 
+function checkColours() {
+  let correct = true;
+  for (let i = 0; i < difficultyFactor; i++) {
+    if (selectedColours[roundCounter][i] != correctColours[i]) {
+      correct = false;
+    }
+  }
+  if (!correct) {
+    // check for end
+    return;
+  }
+  currentState = GameState.END;
 
+}
 function drawGame() {
-  for (let j = 0; j < MAXROUNDS + 1; j++) {
+  if (debugMode) {
     let xVal = 50;
     let offsetVal = 200 / (difficultyFactor - 1);
     for (let i = 0; i < difficultyFactor; i++) {
-      if (j == 0) {
-        fill(colours[correctColours[i]]);
-      }
-      else {
-        log(i, j);
-        fill(selectedColours[j - 1][i]);
-      }
-      circle(xVal, 200 + (j * 35), 30);
+      fill(colours[correctColours[i]]);
+      circle(xVal, 550, 30);
+      xVal = xVal + offsetVal;
+    }
+  }
+  for (let j = 0; j < roundCounter + 1; j++) {
+    let xVal = 50;
+    let offsetVal = 200 / (difficultyFactor - 1);
+    for (let i = 0; i < difficultyFactor; i++) {
+      fill(colours[selectedColours[j][i]]);
+      circle(xVal, 150 + (j * 35), 30);
       xVal = xVal + offsetVal;
     }
   }
@@ -143,6 +162,10 @@ function drawGame() {
   pop();
 }
 
+function drawEnd() {
+  background(GREEN);
+}
+
 function setup() {
   createCanvas(WIDTH, HEIGHT);
   defineGlobals();
@@ -153,11 +176,14 @@ function draw() {
   if (currentState == GameState.MENU) {
     drawMenu();
   }
-  if (currentState == GameState.GAME) {
+  else if (currentState == GameState.GAME) {
     drawGame();
   }
+  else if (currentState == GameState.END) {
+    drawEnd();
+  }
   push();
-  {
+  if (debugMode) {
     fill(255, 0, 0);
     text(debugText, WIDTH / 2, HEIGHT - 100);
   }
@@ -191,7 +217,11 @@ function mouseClicked() {
     if (mouseY > HEIGHT - 200) {
       if (mouseY > HEIGHT - 100) {
         if (mouseX > 200) {
-          debugText = "Enter";
+          if (roundCounter != MAXROUNDS - 1) {
+            checkColours();
+            roundCounter++;
+            colourIndex = 0;
+          }
         }
         else {
           clearSelectedColours();
@@ -228,5 +258,13 @@ function keyPressed() {
   }
   if (key == 'c') {
     debugText = "";
+  }
+  if (key == 'D') {
+    if (!debugMode) {
+      debugMode = true;
+    }
+    else {
+      debugMode = false;
+    }
   }
 }
