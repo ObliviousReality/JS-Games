@@ -50,13 +50,14 @@
         .listCenter {
             width: 50%;
             background-color: 121212;
+            cursor: pointer;
         }
 
         .listCenter>a {
             text-decoration: none;
         }
 
-        .listCenter>a>h3 {
+        .listCenter>h3 {
             color: #6b16a2;
             font-size: 10vw;
             padding: none;
@@ -64,7 +65,7 @@
         }
 
         @media only screen and (min-width: 768px) {
-            .listCenter>a>h3 {
+            .listCenter>h3 {
                 font-size: 2vw;
             }
         }
@@ -99,7 +100,6 @@
         function loadGameData() {
             var file = new XMLHttpRequest();
             file.open("GET", "gamesList.json", true);
-            console.log("hey");
 
             file.onreadystatechange = () => {
                 if (file.readyState == 4) {
@@ -107,27 +107,28 @@
                     var table = document.querySelector("#gamesList");
                     Object.keys(data).forEach((item) => {
                         let obj = data[item];
-                        console.log(obj);
+
                         let textElem = document.createElement("h3");
                         textElem.textContent = obj["external_name"];
-                        let linkElem = document.createElement("a");
-                        linkElem.href = obj["internal_name"] + "/index.html";
-                        linkElem.append(textElem);
 
                         let tr = document.createElement("tr");
+
                         let leftTD = document.createElement("td");
                         leftTD.classList.add("listSide");
+
                         let rightTD = document.createElement("td");
                         rightTD.classList.add("listSide");
 
                         let centerElement = document.createElement("td");
                         centerElement.classList.add("listCenter");
-                        centerElement.append(linkElem);
+                        // centerElement.onclick = "location.href='" + obj["internal_name"] + "/index.html" + "'";
+                        centerElement.onclick = () => { document.location.href = obj["internal_name"] + "/index.html"; }
+
+                        centerElement.append(textElem);
                         tr.append(leftTD);
                         tr.append(centerElement);
                         tr.append(rightTD);
                         table.appendChild(tr);
-                        // parent.append(linkElem);
                     });
                 }
             }
