@@ -1,0 +1,14 @@
+{
+    "mastermind": {
+        "external_name": "Main🧠Mind",
+        "internal_name": "mastermind"
+    },
+    "Game 2": {
+        "external_name": "Game 2",
+        "internal_name": "game2"
+    },
+    "Game 3": {
+        "external_name": "Game 3",
+        "internal_name": "game3"
+    }
+}

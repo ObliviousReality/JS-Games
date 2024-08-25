@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Games!</title>
+
+    <style>
+        body {
+            font-family: Bahnschrift;
+            text-align: center;
+            border-spacing: 0px;
+        }
+
+        h1 {
+            font-size: 10vw;
+        }
+
+        tr {
+            margin: 0;
+            padding: 0;
+        }
+
+        td {
+            margin: 0;
+            padding: 0;
+        }
+
+        #gamesList>a {
+            text-decoration: none;
+            color: red;
+        }
+
+        .listSide {
+            background-color: crimson;
+            width: 25%;
+        }
+
+        .listCenter {
+            width: 50%;
+            background-color: aliceblue;
+        }
+
+        .listCenter>a {
+            text-decoration: none;
+        }
+
+        .listCenter>a>h3 {
+            color: #6b16a2;
+            font-size: 4vw;
+            padding: none;
+            margin: 1vw 0px 1vw 0vw;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Games!</h1>
+    <table style="width: 100%; border-spacing: 0;">
+        <tbody id="gamesList">
+        </tbody>
+    </table>
+    <!-- <div id="gamesList">
+
+    </div> -->
+
+
+    <script>
+        function loadGameData() {
+            var file = new XMLHttpRequest();
+            file.open("GET", "gamesList.json", true);
+            console.log("hey");
+
+            file.onreadystatechange = () => {
+                if (file.readyState == 4) {
+                    var data = JSON.parse(file.responseText);
+                    var table = document.querySelector("#gamesList");
+                    Object.keys(data).forEach((item) => {
+                        let obj = data[item];
+                        console.log(obj);
+                        let textElem = document.createElement("h3");
+                        textElem.textContent = obj["external_name"];
+                        let linkElem = document.createElement("a");
+                        linkElem.href = obj["internal_name"] + "/index.html";
+                        linkElem.append(textElem);
+
+                        let tr = document.createElement("tr");
+                        let leftTD = document.createElement("td");
+                        leftTD.classList.add("listSide");
+                        let rightTD = document.createElement("td");
+                        rightTD.classList.add("listSide");
+
+                        let centerElement = document.createElement("td");
+                        centerElement.classList.add("listCenter");
+                        centerElement.append(linkElem);
+                        tr.append(leftTD);
+                        tr.append(centerElement);
+                        tr.append(rightTD);
+                        table.appendChild(tr);
+                        // parent.append(linkElem);
+                    });
+                }
+            }
+
+            file.send();
+        }
+
+        loadGameData();
+    </script>
+</body>
+
+</html>
