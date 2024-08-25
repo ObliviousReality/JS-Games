@@ -10,5 +10,21 @@
     "Game 3": {
         "external_name": "Game 3",
         "internal_name": "game3"
+    },
+    "Game 4": {
+        "external_name": "Game 4",
+        "internal_name": "game4"
+    },
+    "Game 5": {
+        "external_name": "Game 5",
+        "internal_name": "game5"
+    },
+    "Game 6": {
+        "external_name": "Game 6",
+        "internal_name": "game6"
+    },
+    "Game 7": {
+        "external_name": "Game 7",
+        "internal_name": "game7"
     }
 }
