@@ -54,6 +54,7 @@ var roundCounter;
 var colourIndex = 0;
 
 function defineGlobals() {
+  debugMode = false;
   textFont("Bahnschrift");
   currentState = GameState.MENU;
   RED = color(255, 0, 0);
